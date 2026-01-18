@@ -39,8 +39,15 @@ const lengthOptions = [
   { value: "long", label: "Long (24 bars)" },
 ];
 
+// 🔗 Backend API URL (from Vercel / local .env)
+const API_URL = import.meta.env.VITE_API_URL;
+
 const fetchLyrics = async ({ theme, mood, length }) => {
-  const response = await fetch("/api/lyrics", {
+  if (!API_URL) {
+    throw new Error("API URL not configured");
+  }
+
+  const response = await fetch(`${API_URL}/api/lyrics`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ theme, mood, length }),
